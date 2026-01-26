@@ -2,7 +2,7 @@ import User from "../models/User.js"
 import { Purchase } from "../models/Purchase.js"
 import Stripe from "stripe"
 import Course from "../models/Course.js"
-import CourseProgess from "../models/CourseProgress.js"
+import CourseProgress from "../models/CourseProgress.js"
 
 // get user data
 export const getUserData = async (req, res) => {
@@ -90,7 +90,7 @@ export const updateUserCourseProgress = async (req, res)=> {
     try {
         const userId = req.auth.UserId
         const {courseId, lectureId} = req.body
-        const progressData = await CourseProgess.findOne({userId, courseId})
+        const progressData = await CourseProgress.findOne({userId, courseId})
 
         if (progressData) {
           if (progressData.lectureCompleted.includes(lectureId)) {
@@ -99,7 +99,7 @@ export const updateUserCourseProgress = async (req, res)=> {
           progressData.lectureCompleted.push(lectureId)
           await progressData.save()
         }else{
-            await CourseProgess.create({
+            await CourseProgress.create({
                 userId,
                 courseId,
                 lectureCompleted:  [lectureId]
@@ -117,7 +117,7 @@ export const getUserCourseProgress = async (req, res)=> {
     try {
          const userId = req.auth.UserId
         const {courseId} = req.body
-        const progressData = await CourseProgess.findOne({userId, courseId})
+        const progressData = await CourseProgress.findOne({userId, courseId})
         res.json({succeess: true, progressData})
     } catch (error) {
         res.json({succeess: false, message: error.message

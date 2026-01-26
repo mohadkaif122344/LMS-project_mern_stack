@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const CourseProgessSchema = new mongoose.Schema(
+const CourseProgressSchema = new mongoose.Schema(
   {
     userId: { type: String, required: true },
     courseId: { type: String, required: true },
@@ -11,6 +11,6 @@ const CourseProgessSchema = new mongoose.Schema(
     minimize: false,
   },
 );
-export  const CourseProgess = mongoose.model("CourseProgess", CourseProgessSchema);
+export  const CourseProgress = mongoose.model('CourseProgess', CourseProgressSchema);
 
-
+export default CourseProgress;
