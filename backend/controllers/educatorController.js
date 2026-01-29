@@ -26,7 +26,7 @@ export const addCourse = async (req, res) => {
   try {
     const { courseData } = req.body;
     const imageFile = req.file;
-    const educatorId = req.auth.userId;
+  const {userId: educatorId} = req.auth()
 
     if (!imageFile) {
       return res.json({ success: false, message: "Thumbnail Not Attached" });
