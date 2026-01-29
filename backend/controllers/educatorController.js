@@ -1,11 +1,12 @@
-import { clerkClient } from "@clerk/express";
+import { clerkClient} from "@clerk/express";
 import Course from "../models/Course.js";
 import { v2 as cloudinary } from "cloudinary";
 import { Purchase } from "../models/Purchase.js";
+import User from '../models/User.js'
 
 export const updateRoleToEducator = async (req, res) => {
   try {
-    const userId = req.auth.userId;
+    const {userId} = req.auth()
 
     await clerkClient.users.updateUserMetadata(userId, {
       publicMetadata: {
@@ -46,7 +47,7 @@ export const addCourse = async (req, res) => {
 // get educatore courses
 export const getEducatorCourses = async (req, res) => {
   try {
-    const educator = req.auth.userId;
+    const {userId: educator} = req.auth();
     const courses = await Course.find({ educator });
     res.json({ success: true, courses });
   } catch (error) {
@@ -55,9 +56,9 @@ export const getEducatorCourses = async (req, res) => {
 };
 
 // get educator Dashboard Data
-export const educatoreDashboardData = async () => {
+export const educatoreDashboardData = async (req, res) => {
     try {
-        const educator = req.auth.userId;
+        const {userId: educator} = req.auth();
         const courses = await Course.find({educator});
         const totalCourses = courses.length;
 
@@ -82,12 +83,12 @@ export const educatoreDashboardData = async () => {
             })
         }
 
-        res.json({success: true, DashboardData: {
+        res.json({success: true, dashboardData: {
             totalEarnings, enrolledStudentsData, totalCourses
         }})
 
     } catch (error) {
-       res.json({success: false, message: error.message}) 
+       res.json({success: false, message: error.message});
     }
 }
 
@@ -95,7 +96,7 @@ export const educatoreDashboardData = async () => {
 // get enrolled students Data with Purchase Data
 export const getEnrolledStudentsData = async (req, res)=>{
     try {
-        const educator = req.auth.userId;
+        const {userId: educator} = req.auth();
         const courses = await Course.find({educator})
         const courseIds = courses.map(course => course._id);
 

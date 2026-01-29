@@ -1,10 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import uniqid from 'uniqid';
 import Quill from 'quill';
 import { assets } from '../../assets/assets';
+import { AppContext } from '../../context/AddContext';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const AddCourse = () => {
 
+  const {backendUrl, getToken} = useContext(AppContext)
   const quillRef = useRef(null);
   const editorRef = useRef(null);
 
@@ -86,7 +90,39 @@ const AddCourse = () => {
     });
   };
   const handleSubmit = async (e) => {
-    e.preventDefault()
+   try {
+     e.preventDefault()
+     if (!image) {
+      toast.error('Thumbnail Not Selected')
+     }
+     const courseData = {
+      courseTitle,
+      courseDescription: quillRef.current.root.innerHTML,
+      coursePrice: Number(coursePrice),
+      discount: Number(discount),
+      courseContent: chapters,
+     }
+
+     const formData = new FormData()
+     formData.append('courseData', JSON.stringify(courseData))
+     formData.append('image', image)
+
+     const token = await getToken()
+     const {data} = await axios.post(backendUrl + '/api/educator/add-course', formData, {headers: {Authorization: `Bearer ${token}`}})
+
+     if (data.success) {
+      toast.success(data.message)
+      setCourseTitle('')
+      setCoursePrice(0)
+      setImage(null)
+      setChapters([])
+      quillRef.current.root.innerHTML = ""
+     }else{
+      toast.error(data.message)
+     }
+   } catch (error) {
+    toast.error(error.message)
+   }
   };
 
   useEffect(()=>{
@@ -104,9 +140,9 @@ const AddCourse = () => {
           <p>Course Title</p>
           <input onChange={e => setCourseTitle(e.target.value)} value={courseTitle} type="text" placeholder='Type here' className='outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500' required/>
         </div>
-        <div className='flex flex-col gap-1'>
+        <div className='flex flex-col gap-1 '>
           <p>Course Description</p>
-          <div ref={editorRef}></div>
+          <div  ref={editorRef}></div>
         </div>
         <div className='flex items-center justify-between flex-wrap'>
 <div className='flex flex-col gap-1'>
@@ -115,10 +151,10 @@ const AddCourse = () => {
         </div>
         <div className='flex md:flex-row flex-col items-center gap-3'>
           <p>Course Thumbnail</p>
-          <label htmlFor="thumbnail" className='flex items-center gap-3'>
+          <label htmlFor="thumbnailImage" className='flex items-center gap-3 cursor-pointer'>
             <img src={assets.file_upload_icon} alt="" className='p-3 bg-blue-500 rounded'/>
             <input type="file" id='thumbnailImage' onChange={e => setImage(e.target.files[0])} accept='image/*' hidden/>
-            <img className='max-h-10' src={image ? URL.createObjectURL(image) : ''} alt="" />
+            <img className='max-h-10' src={image ? URL.createObjectURL(image) : '' } alt="" />
           </label>
         </div>
         </div>
@@ -150,7 +186,7 @@ const AddCourse = () => {
 {lectureIndex + 1} {lecture.lectureTitle} - {lecture.lectureDuration} mins - <a href={lecture.lectureUrl} target='_blank' className='text-blue-500'>
   Link
 </a> - {lecture.isPreviewFree ? 'Free Preview' : 'Paid'}</span>
-<img src={assets.cross_icon} alt="" onClick={()=>handleLecture('remove', chapter.chapterIndex)} className='cursor-pointer'/>
+<img src={assets.cross_icon} alt="" onClick={()=>handleLecture('remove', chapter.chapterId, lectureIndex)} className='cursor-pointer'/>
                           </div>
                         ))
                       }

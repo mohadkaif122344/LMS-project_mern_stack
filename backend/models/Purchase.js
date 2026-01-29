@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const PurchaseSchema = new mongoose.Schema({
     courseId: {type: mongoose.Schema.Types.ObjectId, ref: 'Course', required: true},
     userId: {type: String,
-        ref: 'User', required: true
+    ref: 'User.', required: true
     },
     amount: {
    type: Number, required: true
@@ -12,6 +12,6 @@ const PurchaseSchema = new mongoose.Schema({
     status: {
    type: String, enum: ['pending', 'completed', 'failed'], default: 'pending'
     }
-}, {timestemps: true});
+}, {timestamps: true});
 
 export const Purchase = mongoose.model('Purchase', PurchaseSchema)
