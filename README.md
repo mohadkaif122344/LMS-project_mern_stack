@@ -84,9 +84,9 @@ CLOUDINARY_NAME=your_cloudinary_name
 CLOUDINARY_API_KEY=your_cloudinary_key
 CLOUDINARY_SECRET_KEY=your_cloudinary_secret
 
-
+```
 ### Frontend (`.env`)
-
+```bash
 VITE_CURRENCY = '$'
 VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 
@@ -101,12 +101,13 @@ VITE_BACKEND_URL=http://localhost:5000
 ```bashe
 git clone https://github.com/your-username/lms-platform.git
 cd lms-platform
-
+```
 2️⃣ Backend Setup
+```
 cd backend
 npm install
 npm run dev
-
+```
 🚀 Deployment (Vercel)
 🔹 Frontend Deployment
 
@@ -123,13 +124,13 @@ Build Command → npm run build
 Output Directory → dist
 
 Add frontend environment variables
-
+```
 Deploy 🎉
 
 🔹 Backend Deployment
 
 Add vercel.json inside backend/
-
+```bash
 {
   "version": 2,
   "builds": [
