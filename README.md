@@ -99,8 +99,10 @@ VITE_BACKEND_URL=http://localhost:5000
 
 ### 1️⃣ Clone Repository
 ```bashe
-git clone https://github.com/your-username/lms-platform.git
-cd lms-platform
+git clone https://github.com/your-username/LMS-project_mern_stack
+.git
+cd LMS-project_mern_stack
+
 ```
 2️⃣ Backend Setup
 ```
@@ -124,7 +126,7 @@ Build Command → npm run build
 Output Directory → dist
 
 Add frontend environment variables
-```
+
 Deploy 🎉
 
 🔹 Backend Deployment
