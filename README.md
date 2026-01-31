@@ -67,7 +67,7 @@ This platform allows educators to create and sell courses, and students to enrol
 ## 🔑 Environment Variables
 
 ### Backend (`.env`)
-
+```base
 CURRENCY='USD' 
 
 MONGO_URI=your_mongodb_uri
