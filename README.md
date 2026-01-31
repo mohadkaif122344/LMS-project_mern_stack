@@ -93,12 +93,12 @@ VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 VITE_BACKEND_URL=http://localhost:5000
 
 
----
+```
 
 ## ▶️ How to Run Locally
 
 ### 1️⃣ Clone Repository
-```bash
+```bashe
 git clone https://github.com/your-username/lms-platform.git
 cd lms-platform
 
